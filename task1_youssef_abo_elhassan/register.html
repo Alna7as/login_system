@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Login System</title>
+    <style>
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            padding: 0;
+            width: auto;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            z-index: 1;
+        }
+
+        .password-toggle:hover {
+            opacity: 0.7;
+        }
+
+        .password-toggle svg {
+            color: var(--text-color);
+            width: 22px;
+            height: 22px;
+            transition: color 0.2s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes rotateIn {
+            from {
+                transform: rotate(-180deg) scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: rotate(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        :root {
+            --bg-color: #f5f5f5;
+            --text-color: #1f2937;
+            --input-bg: white;
+            --input-border: #e5e7eb;
+            --error-color: #dc2626;
+            --container-bg: white;
+            --container-shadow: rgba(0, 0, 0, 0.1);
+            --heading-color: #1f2937;
+            --label-color: #4b5563;
+            --link-color: #6366f1;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1f2937;
+            --text-color: #f3f4f6;
+            --input-bg: #374151;
+            --input-border: #4b5563;
+            --error-color: #ef4444;
+            --container-bg: #111827;
+            --container-shadow: rgba(0, 0, 0, 0.25);
+            --heading-color: #f9fafb;
+            --label-color: #9ca3af;
+            --link-color: #818cf8;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .page-container {
+            display: flex;
+            width: 100%;
+            max-width: 1100px;
+            height: 699px;
+            margin: 1.5rem;
+            animation: fadeInUp 0.8s ease-out;
+            background: var(--container-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 20px var(--container-shadow);
+        }
+
+        .illustration-side {
+            flex: 1;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .cube-illustration {
+            width: 200px;
+            height: 200px;
+            animation: rotateIn 1s ease-out;
+        }
+
+        .register-side {
+            flex: 1;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 500px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out forwards;
+            position: relative;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.2s; }
+        .form-group:nth-child(2) { animation-delay: 0.4s; }
+        .form-group:nth-child(3) { animation-delay: 0.6s; }
+        .form-group:nth-child(4) { animation-delay: 0.8s; }
+
+        input {
+            width: 100%;
+            padding: 0.875rem;
+            border: 1px solid var(--input-border);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+
+        button {
+            margin-top: 0.5rem;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .login-link {
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                flex-direction: column;
+                max-width: 95%;
+                height: auto;
+                margin: 1rem;
+            }
+
+            .illustration-side {
+                padding: 3rem;
+                min-height: 300px;
+            }
+
+            .register-side {
+                padding: 2rem;
+                max-width: 100%;
+            }
+
+            .cube-illustration {
+                width: 150px;
+                height: 150px;
+            }
+        }
+        .logo {
+            margin-bottom: 2rem;
+            color: #6366f1;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        h2 {
+            color: var(--heading-color);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--label-color);
+            font-size: 0.875rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--input-border);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            transform: translateY(-1px);
+        }
+
+        input::placeholder {
+            color: var(--label-color);
+            opacity: 0.7;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+        }
+
+        button:hover {
+            background-color: #4f46e5;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+        }
+
+        .password-requirements {
+            color: var(--label-color);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .requirement {
+            margin: 4px 0;
+        }
+
+        .requirement.valid {
+            color: #10b981;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            padding: 0;
+            width: auto;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .password-toggle:hover {
+            opacity: 0.7;
+        }
+
+        .password-toggle svg {
+            color: var(--text-color);
+            width: 22px;
+            height: 22px;
+            transition: color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #4f46e5;
+        }
+
+        .error {
+            color: var(--error-color);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .password-requirements {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-color);
+        }
+
+        .requirement {
+            margin: 0.25rem 0;
+            transition: color 0.3s;
+        }
+
+        .requirement.valid {
+            color: #10B981;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--label-color);
+            font-size: 0.875rem;
+        }
+
+        .login-link a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .illustration-side {
+                padding: 2rem;
+            }
+
+            .cube-illustration {
+                width: 150px;
+                height: 150px;
+            }
+
+            .register-side {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <div class="theme-toggle" style="position: fixed; top: 1rem; right: 1rem; cursor: pointer;">
+        <svg id="themeIcon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+    </div>
+    <div class="page-container">
+        <div class="illustration-side">
+            <svg class="cube-illustration" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#FCD34D" d="M100 20L40 50v100l60 30 60-30V50L100 20zm0 10l50 25v85l-50 25-50-25V55l50-25z"/>
+                <path fill="#FCD34D" opacity="0.7" d="M100 30v85l50 25V55l-50-25z"/>
+                <path fill="#FCD34D" opacity="0.5" d="M50 55v85l50 25V80L50 55z"/>
+            </svg>
+        </div>
+        <div class="register-side">
+            <div class="logo">youssef alna7as</div>
+            <h2>Sign Up</h2>
+            <form id="registerForm" onsubmit="return validateForm(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                    <div id="usernameError" class="error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <div id="emailError" class="error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                        <button type="button" id="togglePassword" class="password-toggle" title="Toggle password visibility">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="passwordError" class="error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                        <button type="button" id="toggleConfirmPassword" class="password-toggle" title="Toggle password visibility">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                        <div id="confirmPasswordError" class="error"></div>
+                    </div>
+                </div>
+                <div id="generalError" class="error"></div>
+                <button type="submit">Create Account</button>
+                <div class="login-link">
+                    Already have an account? <a href="index.html">Sign In</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Attach form submission handler
+        document.querySelector('form').addEventListener('submit', validateForm);
+
+        // Password visibility toggle
+        const togglePassword = document.getElementById('togglePassword');
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirmPassword');
+
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.querySelector('svg').style.color = type === 'text' ? '#6366f1' : 'currentColor';
+        });
+
+        toggleConfirmPassword.addEventListener('click', function() {
+            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPassword.setAttribute('type', type);
+            this.querySelector('svg').style.color = type === 'text' ? '#6366f1' : 'currentColor';
+        });
+
+        function validateForm(event) {
+            event.preventDefault();
+            
+            // Reset errors
+            document.querySelectorAll('.error').forEach(error => error.style.display = 'none');
+            
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            let isValid = true;
+
+            // Validation checks
+            if (username.length < 3) {
+                document.getElementById('usernameError').textContent = 'Username must be at least 3 characters long';
+                document.getElementById('usernameError').style.display = 'block';
+                isValid = false;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email address';
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (password.length < 6 || !/[0-9]/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                document.getElementById('passwordError').textContent = 'Password must be at least 6 characters long and contain at least one number and one special character';
+                document.getElementById('passwordError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Passwords do not match';
+                document.getElementById('confirmPasswordError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (isValid) {
+                const submitButton = document.querySelector('button[type="submit"]');
+                submitButton.disabled = true;
+                submitButton.textContent = 'Creating Account...';
+
+                fetch('api/register.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        email: email,
+                        password: password
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('generalError').style.color = '#10B981';
+                        document.getElementById('generalError').textContent = 'Registration successful! Redirecting...';
+                        document.getElementById('generalError').style.display = 'block';
+                        localStorage.setItem('registrationSuccess', 'true');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1500);
+                    } else {
+                        document.getElementById('generalError').style.color = '';
+                        document.getElementById('generalError').textContent = data.message;
+                        document.getElementById('generalError').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Registration error:', error);
+                    document.getElementById('generalError').textContent = 'An error occurred during registration. Please try again.';
+                    document.getElementById('generalError').style.display = 'block';
+                })
+                .finally(() => {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Create Account';
+                });
+            }
+
+            return false;
+        }
+    </script>
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+        
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 A7 7 0 0 0 21 12.79z"/>';
+            } else {
+                themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+            }
+        }
+        
+        // Initialize theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+        
+        themeToggle.addEventListener('click', toggleTheme);
+    </script>
+</body>
+</html>
